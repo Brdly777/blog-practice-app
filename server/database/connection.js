@@ -4,7 +4,7 @@ const sequelize = new Sequelize('blog', 'brdly', '', {
     host: 'localhost',
     dialect: 'mysql',
     port: 3306,
-    logging: console.log,  // Habilita el registro de SQL
+    logging: console.log,
 });
 
 sequelize.authenticate()

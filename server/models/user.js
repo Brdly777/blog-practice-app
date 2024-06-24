@@ -9,18 +9,30 @@ const User = sequelize.define('User', {
     },
     username: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     email: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true,
+        validate: {
+            isEmail: true
+        }
     },
     password: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    profile_picture: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 }, {
-    timestamps: false
+    timestamps: true,  // Añadir createdAt y updatedAt automáticamente
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    tableName: 'users'
 });
 
 module.exports = User;
