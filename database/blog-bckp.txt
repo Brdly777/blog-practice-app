@@ -1,0 +1,44 @@
+USE BLOG
+
+CREATE TABLE users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    profile_picture VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE posts (
+    post_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    image_url VARCHAR(255),  -- Optional field for images
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE comments (
+    comment_id INT AUTO_INCREMENT PRIMARY KEY,
+    post_id INT,
+    user_id INT,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (post_id) REFERENCES posts(post_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+INSERT INTO users (username, email, password) VALUES ('bradley', 'bradley@gmail.com', 'hashed_password');
+
+INSERT INTO posts (user_id, title, content, image_url) VALUES (1, 'Mi Primera Publicación', 'Este es el contenido de la publicación.', 'https://digitalcubik.com/wp-content/uploads/2022/08/post.jpg');
+
+INSERT INTO comments (post_id, user_id, content) VALUES (1, 1, 'Este es un comentario.');
+
+SELECT posts.title, posts.content, comments.content AS comment_content, comments.created_at AS comment_date
+FROM posts
+LEFT JOIN comments ON posts.post_id = comments.post_id
+WHERE posts.user_id = 1;
